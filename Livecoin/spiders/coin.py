@@ -14,6 +14,7 @@ class CoinSpider(scrapy.Spider):
         chrome_options.add_argument("--headless")
         chrome_path=which("chromedriver")
         driver=webdriver.Chrome(executable_path=chrome_path,options=chrome_options)
+        driver.set_window_size(1920,1080)#setting the viewPort to maximum
         driver.get("https://www.livecoin.net/en")
 
         tab=driver.find_elements_by_class_name("filterPanelItem___2z5Gb")
@@ -31,5 +32,5 @@ class CoinSpider(scrapy.Spider):
             yield{
                 'currency_pair':currency.xpath(".//div[1]/div/text()").get(),
                 'volume(24h)':currency.xpath(".//div[2]/span/text()").get()
-
             }
+        #item scraped count may sometimes be less than what is actually on the page, because  website fits the content browser resolution. So we need to fit the viewPort to maximum resolution
